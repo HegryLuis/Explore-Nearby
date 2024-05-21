@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Header.css";
 
+// Header
 const Header: React.FC = () => {
   const [modalActive, setModalActive] = useState(false);
 
