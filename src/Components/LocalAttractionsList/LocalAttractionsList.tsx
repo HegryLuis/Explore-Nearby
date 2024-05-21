@@ -68,15 +68,10 @@ const LocalAttractionInfo: React.FC<{ place: Place; onClick: () => void }> = ({
   );
 };
 
-interface LocalAttractionProps {
+const LocalAttractionsList: React.FC<{
   list: Place[];
   onPlaceClick: (place: Place) => void;
-}
-
-const LocalAttractionsList: React.FC<LocalAttractionProps> = ({
-  list,
-  onPlaceClick,
-}) => {
+}> = ({ list, onPlaceClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -92,9 +87,40 @@ const LocalAttractionsList: React.FC<LocalAttractionProps> = ({
   };
 
   return (
-    <>
-      <h2 className="search-title">Local Attractions:</h2>
-      <div className="slider-container">
+    <div className="slider-main">
+      <div className="slider-title">
+        <h2>Local Attractions:</h2>
+      </div>
+
+      {list.length === 0 ? (
+        <div className="loading-container">
+          <div className="loading-spinner"></div>
+        </div>
+      ) : (
+        <div className="slider-container">
+          <button className="prev-button" onClick={prevSlide}>
+            &#10094;
+          </button>
+          <div className="slider">
+            {list.map((place: Place, index: number) => (
+              <div
+                key={index}
+                className={`slide ${index === currentIndex ? "active" : ""}`}
+              >
+                <LocalAttractionInfo
+                  place={place}
+                  onClick={() => onPlaceClick(place)}
+                />
+              </div>
+            ))}
+          </div>
+          <button className="next-button" onClick={nextSlide}>
+            &#10095;
+          </button>
+        </div>
+      )}
+
+      {/* <div className="slider-container">
         <button className="prev-button" onClick={prevSlide}>
           &#10094;
         </button>
@@ -114,8 +140,8 @@ const LocalAttractionsList: React.FC<LocalAttractionProps> = ({
         <button className="next-button" onClick={nextSlide}>
           &#10095;
         </button>
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 };
 

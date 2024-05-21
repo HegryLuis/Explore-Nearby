@@ -13,12 +13,13 @@ import {
   capitalizeFirstLetter,
   clearMarkers,
 } from "./Components/Map/MapUtils";
+import Header from "Components/Header/Header";
 
 const App: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
   const [localAttractions, setLocalAttractions] = useState<Place[]>([]);
-  const [selectedType, setSelectedType] = useState<string>("");
+  const [selectedType, setSelectedType] = useState<string>("restaurant");
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
 
   const placeTypes = [
@@ -49,7 +50,8 @@ const App: React.FC = () => {
   }, [selectedPlace]);
 
   return (
-    <>
+    <div className="App">
+      <Header />
       <div className="filters">
         <h3 className="filters-title">Select Place Types</h3>
         <div className="placeType-filter">
@@ -89,30 +91,37 @@ const App: React.FC = () => {
         </button>
       </div>
 
-      <Map
-        onMapReady={(mapInstance: google.maps.Map) => {
-          setMap(mapInstance);
-          onMapReady(
-            mapInstance,
-            markers,
-            setMarkers,
-            setLocalAttractions,
-            selectedType
-          );
-        }}
-        onMarkerClick={(position: google.maps.LatLng) => {
-          addMarker(position, map, markers, setMarkers);
-          searchNearbyPlaces(position, map, setLocalAttractions, selectedType);
-        }}
-        selectedType={selectedType}
-        setMap={setMap}
-        map={map}
-      />
-      <LocalAttractionsList
-        list={localAttractions}
-        onPlaceClick={(place) => setSelectedPlace(place)}
-      />
-    </>
+      <div className="main-app">
+        <Map
+          onMapReady={(mapInstance: google.maps.Map) => {
+            setMap(mapInstance);
+            onMapReady(
+              mapInstance,
+              markers,
+              setMarkers,
+              setLocalAttractions,
+              selectedType
+            );
+          }}
+          onMarkerClick={(position: google.maps.LatLng) => {
+            addMarker(position, map, markers, setMarkers);
+            searchNearbyPlaces(
+              position,
+              map,
+              setLocalAttractions,
+              selectedType
+            );
+          }}
+          selectedType={selectedType}
+          setMap={setMap}
+          map={map}
+        />
+        <LocalAttractionsList
+          list={localAttractions}
+          onPlaceClick={(place) => setSelectedPlace(place)}
+        />
+      </div>
+    </div>
   );
 };
 
