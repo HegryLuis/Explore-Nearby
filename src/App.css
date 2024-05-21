@@ -11,7 +11,7 @@
   height: 100px;
 }
 
-/* Header */
+/* Filters */
 .filters {
   margin: 10px;
 }
@@ -20,7 +20,7 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #333;
+  color: #023e8a;
   text-align: center;
   padding: 5px 0;
   border-bottom: 2px solid #ddd;
@@ -34,8 +34,11 @@
   border-bottom: 2px solid #ddd;
 }
 
+/* Filter end */
+
 label {
   float: left;
+  color: #023e8a;
 }
 
 .custom-placeType [type="radio"]:checked,
@@ -76,7 +79,7 @@ label {
   content: "";
   width: 8px;
   height: 8px;
-  background: #00154d;
+  background: #03045e;
   position: absolute;
   top: 8px;
   left: 8px;
@@ -113,7 +116,7 @@ label {
   font-size: 16px;
   font-weight: bold;
   color: #fff;
-  background-color: rgba(244, 91, 105, 1);
+  background-color: #03045e;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -121,18 +124,8 @@ label {
   border-bottom: 2px solid #ddd;
 }
 
-button:hover {
-  background-color: #002966;
-}
-
-button:active {
-  background-color: #004085;
-}
-
-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-  opacity: 0.65;
+.buttons button:hover {
+  background-color: #0077b6;
 }
 
 .main-app {

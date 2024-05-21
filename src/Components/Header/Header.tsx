@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./Header.css";
 
-// Header
 const Header: React.FC = () => {
   const [modalActive, setModalActive] = useState(false);
 
@@ -21,7 +20,7 @@ const Header: React.FC = () => {
           >
             <path
               d="M12 0C7.662 0 4.5 3.162 4.5 7.5c0 4.11 6.3 12 7.5 12s7.5-7.89 7.5-12C19.5 3.162 16.338 0 12 0zm0 10.5c-1.656 0-3-1.344-3-3s1.344-3 3-3 3 1.344 3 3-1.344 3-3 3z"
-              fill="rgba(244, 91, 105, 1)"
+              fill="#03045E"
             />
           </svg>
         </div>
@@ -36,6 +35,9 @@ const Header: React.FC = () => {
 
       <div className={`modal ${modalActive ? "active" : ""}`}>
         <div className="modal-content">
+          <button className="close-button" onClick={toggleModal}>
+            <span>X</span>
+          </button>
           <form className="login">
             <input type="text" placeholder="Username" />
             <input type="password" placeholder="Password" />

@@ -5,7 +5,7 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(to bottom, #e0f7fa, #80deea);
+  background: linear-gradient(to bottom, #e0f7fa, #023e8a);
 }
 
 .slider-title {
@@ -50,7 +50,6 @@
   left: 0;
   display: none;
   font-size: 22px;
-  border: 1px solid #e0f7fa;
 }
 
 .slide.active {
@@ -73,9 +72,38 @@
 }
 
 .text-info h2 {
-  padding: 5px;
-  font-size: 22px;
-  border-bottom: 3px solid #e0f7fa;
+  padding: 5px 0;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.text-info p {
+  margin: 8px 0;
+  font-size: 16px;
+}
+
+.place-buttons {
+  margin: 20px 0;
+}
+
+.place-buttons button {
+  background-color: #03045e;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.place-buttons button:hover {
+  background-color: #0077b6;
+}
+
+.place-buttons button:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(244, 91, 105, 0.5);
 }
 
 .local-attraction-info h2 {

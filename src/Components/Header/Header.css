@@ -21,7 +21,7 @@
 .header-title {
   font-size: 24px;
   font-family: Arial, sans-serif;
-  color: rgba(244, 91, 105, 1);
+  color: #03045e;
 }
 
 @keyframes pulse {
@@ -45,7 +45,7 @@
   font-size: 16px;
   font-weight: bold;
   color: #fff;
-  background-color: rgba(244, 91, 105, 1);
+  background-color: #03045e;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -53,7 +53,7 @@
 }
 
 .header-button:hover {
-  background-color: #004d40;
+  background-color: #0077b6;
 }
 /* Стили для модального блока */
 .modal {
@@ -71,7 +71,7 @@
 
 .modal-content {
   position: relative;
-  overflow: hidden; /* Обрезаем видимую часть псевдоэлементов за пределами блока .login */
+  overflow: hidden;
   background-color: #fff;
   padding: 40px 30px 30px 30px;
   border-radius: 10px;
@@ -148,10 +148,28 @@
   margin-top: 10px;
   margin-left: -5px;
   border-radius: 5px;
-  background-color: rgba(244, 91, 105, 1);
+  background-color: #03045e;
   transition: background-color 0.3s;
 }
 
 .login button:hover {
-  background-color: #d85c6a;
+  background-color: #0077b6;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.close-button span {
+  color: #03045e;
+}
+
+.close-button span:hover {
+  color: #0077b6; /* Изменение цвета при наведении */
 }

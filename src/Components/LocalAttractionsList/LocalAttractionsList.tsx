@@ -119,28 +119,6 @@ const LocalAttractionsList: React.FC<{
           </button>
         </div>
       )}
-
-      {/* <div className="slider-container">
-        <button className="prev-button" onClick={prevSlide}>
-          &#10094;
-        </button>
-        <div className="slider">
-          {list.map((place: Place, index: number) => (
-            <div
-              key={index}
-              className={`slide ${index === currentIndex ? "active" : ""}`}
-            >
-              <LocalAttractionInfo
-                place={place}
-                onClick={() => onPlaceClick(place)}
-              />
-            </div>
-          ))}
-        </div>
-        <button className="next-button" onClick={nextSlide}>
-          &#10095;
-        </button>
-      </div> */}
     </div>
   );
 };
