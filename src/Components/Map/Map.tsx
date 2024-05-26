@@ -54,7 +54,9 @@ const Map: React.FC<MapProps> = ({
     }
   }, [selectedType]);
 
-  return <div id="map" style={{ width: "50%", height: "600px" }} />;
+  return (
+    <div id="map" className="map" style={{ width: "50%", height: "600px" }} />
+  );
 };
 
 export default Map;

@@ -1,12 +1,63 @@
 import React, { useState } from "react";
 import "./Header.css";
+import axios from "axios";
+import { useApp } from "context";
+
+const signUp = async (username: string, password: string) => {
+  try {
+    const response = await axios.post("http://localhost:3001/users", {
+      name: username,
+      password,
+    });
+    console.log("User signed up:", response.data);
+  } catch (error: any) {
+    console.error("Error signing up:", error.response.data);
+  }
+};
+
+const logIn = async (username: string, password: string) => {
+  try {
+    const response = await axios.post("http://localhost:3001/users/check", {
+      name: username,
+      password,
+    });
+    console.log("User logged in:", response.data);
+  } catch (error: any) {
+    console.error("Error logging in:", error.response.data);
+  }
+};
 
 const Header: React.FC = () => {
   const [modalActive, setModalActive] = useState(false);
+  const [isSighUp, setIsSighUp] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { isLoggedIn, map, user } = useApp();
+
+  const handleSighUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await signUp(username, password);
+    } catch (error: any) {
+      console.error("Error signing up:", error.response.data);
+    }
+  };
+
+  const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await logIn(username, password);
+    } catch (error: any) {
+      console.error("Error logging in:", error.response.data);
+    }
+  };
 
   const toggleModal = () => {
     setModalActive(!modalActive);
   };
+
   return (
     <div className="header">
       <div className="header-left">
@@ -38,11 +89,60 @@ const Header: React.FC = () => {
           <button className="close-button" onClick={toggleModal}>
             <span>X</span>
           </button>
-          <form className="login">
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button>Login</button>
-          </form>
+
+          <h6>
+            <span
+              onClick={() => {
+                setIsSighUp(false);
+              }}
+              className={!isSighUp ? "active" : ""}
+            >
+              {" "}
+              Log in
+            </span>
+            <span
+              onClick={() => {
+                setIsSighUp(true);
+              }}
+              className={isSighUp ? "active" : ""}
+            >
+              Sigh up
+            </span>
+          </h6>
+
+          {isSighUp ? (
+            <form className="login" onSubmit={handleSighUp}>
+              <input
+                type="text"
+                placeholder="Enter new username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Enter new password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button>Sigh up</button>
+            </form>
+          ) : (
+            <form className="login" onSubmit={handleLogIn}>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button>Log in</button>
+            </form>
+          )}
         </div>
       </div>
     </div>

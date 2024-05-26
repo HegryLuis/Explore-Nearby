@@ -4,13 +4,6 @@
   font-family: sans-serif;
 }
 
-/* Header */
-
-.header {
-  width: 100%;
-  height: 100px;
-}
-
 /* Filters */
 .filters {
   margin: 10px;
@@ -20,7 +13,7 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  color: #023e8a;
+  /* color: #023e8a; */
   text-align: center;
   padding: 5px 0;
   border-bottom: 2px solid #ddd;
@@ -34,13 +27,16 @@
   border-bottom: 2px solid #ddd;
 }
 
-/* Filter end */
-
 label {
   float: left;
-  color: #023e8a;
 }
 
+.custom-placeType {
+  flex: 1 1 45%; /* Allow items to grow and shrink, taking about 45% of the container's width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .custom-placeType [type="radio"]:checked,
 .custom-placeType [type="radio"]:not(:checked) {
   position: absolute;
@@ -101,6 +97,7 @@ label {
   -webkit-transform: scale(1);
   transform: scale(1);
 }
+/* Filter end */
 
 .buttons {
   width: 100%;
@@ -112,9 +109,8 @@ label {
 
 .buttons button {
   margin-right: 50px;
-  padding: 5px 10px;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 3px 8px;
+  font-size: 14px;
   color: #fff;
   background-color: #03045e;
   border: none;
@@ -131,4 +127,82 @@ label {
 .main-app {
   display: flex;
   flex-direction: row-reverse;
+}
+
+@media (max-width: 1024px) {
+  .buttons button {
+    margin-right: 20px;
+  }
+
+  .placeType-filter {
+    flex-wrap: wrap;
+  }
+
+  .custom-placeType__label strong {
+    font-size: 12px;
+  }
+
+  .main-app {
+    flex-direction: column-reverse;
+  }
+  #map {
+    width: 100% !important;
+    height: 400px !important;
+  }
+
+  .slider-main {
+    width: 100% !important;
+    padding: 20px 0 !important;
+  }
+
+  .slider-container {
+    width: 100% !important;
+  }
+
+  .local-attraction-info {
+    flex-direction: column-reverse;
+  }
+
+  .text-info {
+    width: 100%;
+  }
+
+  .photo {
+    width: 100% !important;
+  }
+  .slide-active {
+    max-height: 700px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-button {
+    margin-right: 20px !important;
+  }
+
+  .header-left {
+    padding: 10px;
+    gap: 0;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+
+  .slider-main {
+    padding: 0;
+    border-radius: 0;
+    min-height: 600px;
+  }
+
+  .text-info {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 425px) {
+  .header {
+    flex-direction: column;
+  }
+  .header-button {
+    margin-right: 0 !important;
+  }
 }
