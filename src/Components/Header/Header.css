@@ -24,6 +24,11 @@
   color: #03045e;
 }
 
+.greeting {
+  font-size: 22px;
+  font-family: Arial, sans-serif;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1);

@@ -1,4 +1,5 @@
 import { Place } from "../../models/Place";
+import axios from "axios";
 
 const addMarker = (
   position: google.maps.LatLng | google.maps.LatLngLiteral,
@@ -25,6 +26,50 @@ const getPlaceDetails = (
       }
     });
   });
+};
+
+const getPlaceDetailsById = async (placeId: string): Promise<Place | null> => {
+  try {
+    const response = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=AIzaSyAeNVLCxgGFmlH1ylCKI8m2ohs3IcyM52A`
+    );
+
+    const result = response.data.result;
+
+    const place: Place = {
+      id: result.place_id,
+      name: result.name,
+      vicinity: result.vicinity || "",
+      rating: result.rating,
+      opening_hours: result.opening_hours
+        ? {
+            isOpen: result.opening_hours.open_now,
+            weekday_text: result.opening_hours.weekday_text,
+          }
+        : undefined,
+      photos: result.photos?.map((photo: any) => ({
+        height: photo.height,
+        width: photo.width,
+        photo_reference: photo.photo_reference,
+        html_attributions: photo.html_attributions,
+      })),
+      type: result.types,
+      geometry: result.geometry,
+    };
+
+    return place;
+  } catch (error) {
+    console.error("Error fetching place details:", error);
+    return null;
+  }
+};
+
+const getRatingClass = (rating: number | undefined) => {
+  if (rating === undefined) return "";
+  if (rating >= 0 && rating < 2) return "low-rating";
+  if (rating >= 2 && rating < 3.5) return "medium-rating";
+  if (rating >= 3.5 && rating <= 5) return "high-rating";
+  return "";
 };
 
 const searchNearbyPlaces = async (
@@ -147,6 +192,46 @@ const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
+const fetchFavouritePlaces = async (
+  userId: string,
+  setDetailedPlacesData: React.Dispatch<React.SetStateAction<any[]>>
+) => {
+  if (userId) {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/users/${userId}/favourite-places`
+      );
+      const favoritePlaces = response.data;
+
+      const detailedPlacesPromises = favoritePlaces.map(
+        async (favoritePlace: { place_id: string }) => {
+          try {
+            const detailedResponse = await axios.get(
+              `http://localhost:3001/place-details?placeId=${favoritePlace.place_id}&apiKey=AIzaSyAeNVLCxgGFmlH1ylCKI8m2ohs3IcyM52A`
+            );
+            return detailedResponse.data;
+          } catch (error) {
+            console.error(
+              "Error fetching details for place:",
+              favoritePlace.place_id
+            );
+            return null;
+          }
+        }
+      );
+
+      const detailedPlacesData = await Promise.all(detailedPlacesPromises);
+      const filteredDetailedPlacesData = detailedPlacesData.filter(
+        (place: any) => place !== null
+      );
+
+      setDetailedPlacesData(filteredDetailedPlacesData);
+    } catch (error) {
+      console.error("Error fetching favorite places:", error);
+    }
+  }
+};
+
 export {
   addMarker,
   searchNearbyPlaces,
@@ -156,4 +241,7 @@ export {
   onMapReady,
   capitalizeFirstLetter,
   clearMarkers,
+  getPlaceDetailsById,
+  getRatingClass,
+  fetchFavouritePlaces,
 };

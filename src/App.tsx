@@ -12,10 +12,12 @@ import {
   onMapReady,
   capitalizeFirstLetter,
   clearMarkers,
+  fetchFavouritePlaces,
 } from "./Components/Map/MapUtils";
 import Header from "Components/Header/Header";
 import { Provider } from "context";
 import { User } from "interfaces";
+import FavoritePlacesList from "Components/FavoritePlacesList/FavoritePlacesList";
 
 const App: React.FC = () => {
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -25,6 +27,7 @@ const App: React.FC = () => {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [detailedPlacesData, setDetailedPlacesData] = useState<any[]>([]);
 
   const placeTypes = [
     "restaurant",
@@ -40,6 +43,24 @@ const App: React.FC = () => {
   function handleTypeChange(type: string) {
     setSelectedType(type);
   }
+
+  const handleMarkerClick = (position: google.maps.LatLng) => {
+    if (map) {
+      addMarker(position, map, markers, setMarkers);
+      searchNearbyPlaces(position, map, setLocalAttractions, selectedType);
+    }
+  };
+
+  const handleMapClick = (mapInstance: google.maps.Map) => {
+    setMap(mapInstance);
+    onMapReady(
+      mapInstance,
+      markers,
+      setMarkers,
+      setLocalAttractions,
+      selectedType
+    );
+  };
 
   useEffect(() => {
     if (selectedPlace && map) {
@@ -59,6 +80,15 @@ const App: React.FC = () => {
         map,
         isLoggedIn,
         user,
+        markers,
+        selectedPlace,
+        detailedPlacesData,
+        setDetailedPlacesData,
+        setSelectedPlace,
+        setIsLoggedIn,
+        setUser,
+        setMarkers,
+        fetchFavouritePlaces,
       }}
     >
       <div className="App">
@@ -104,25 +134,8 @@ const App: React.FC = () => {
 
         <div className="main-app">
           <Map
-            onMapReady={(mapInstance: google.maps.Map) => {
-              setMap(mapInstance);
-              onMapReady(
-                mapInstance,
-                markers,
-                setMarkers,
-                setLocalAttractions,
-                selectedType
-              );
-            }}
-            onMarkerClick={(position: google.maps.LatLng) => {
-              addMarker(position, map, markers, setMarkers);
-              searchNearbyPlaces(
-                position,
-                map,
-                setLocalAttractions,
-                selectedType
-              );
-            }}
+            onMapReady={handleMapClick}
+            onMarkerClick={handleMarkerClick}
             selectedType={selectedType}
             setMap={setMap}
             map={map}
@@ -132,6 +145,7 @@ const App: React.FC = () => {
             onPlaceClick={(place) => setSelectedPlace(place)}
           />
         </div>
+        {isLoggedIn && <FavoritePlacesList />}
       </div>
     </Provider>
   );

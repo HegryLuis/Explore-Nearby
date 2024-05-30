@@ -1,77 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Place } from "../../models/Place";
 import "./LocalAttractionsList.css";
-
-const getRatingClass = (rating: number | undefined) => {
-  if (rating === undefined) return "";
-  if (rating >= 0 && rating < 2) return "low-rating";
-  if (rating >= 2 && rating < 3.5) return "medium-rating";
-  if (rating >= 3.5 && rating <= 5) return "high-rating";
-  return "";
-};
-
-const LocalAttractionInfo: React.FC<{ place: Place; onClick: () => void }> = ({
-  place,
-  onClick,
-}) => {
-  return (
-    <div className="local-attraction-info">
-      <div className="text-info">
-        <h2>{place.name}</h2>
-        <p className="address">Address: {place.vicinity}</p>
-        {place.rating && (
-          <p className={`rating ${getRatingClass(place.rating)}`}>
-            Rating: {place.rating}
-          </p>
-        )}
-
-        {place.opening_hours && (
-          <div className="opening-hours">
-            <p className={place.opening_hours.isOpen() ? "open" : "closed"}>
-              Open Now: {place.opening_hours.isOpen() ? "Yes" : "No"}
-            </p>
-
-            {place.opening_hours && place.opening_hours.weekday_text && (
-              <div>
-                <p>Weekday Text:</p>
-                <p>
-                  {place.opening_hours.weekday_text.map((text, index) => (
-                    <span key={index}>
-                      {text}
-                      {index !==
-                        place.opening_hours!.weekday_text!.length - 1 && <br />}
-                    </span>
-                  ))}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-
-        <div className="place-buttons">
-          <button onClick={onClick}>Show in map</button>
-        </div>
-      </div>
-
-      {place.photos && (
-        <div className="photo">
-          {place.photos.map((photo, index) => (
-            <img
-              key={index}
-              src={photo.photo_reference}
-              alt={`Photo ${index}`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import { useApp } from "context";
+import LocalAttractionInfo from "Components/LocalAttractionInfo/LocalAttractionInfo";
 
 const LocalAttractionsList: React.FC<{
   list: Place[];
   onPlaceClick: (place: Place) => void;
 }> = ({ list, onPlaceClick }) => {
+  const { setSelectedPlace } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -85,6 +22,12 @@ const LocalAttractionsList: React.FC<{
       prevIndex === 0 ? list.length - 1 : prevIndex - 1
     );
   };
+
+  useEffect(() => {
+    if (list.length > 0 && setSelectedPlace) {
+      setSelectedPlace(list[currentIndex]);
+    }
+  }, [currentIndex]);
 
   return (
     <div className="slider-main">

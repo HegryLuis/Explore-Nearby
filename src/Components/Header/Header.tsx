@@ -10,20 +10,24 @@ const signUp = async (username: string, password: string) => {
       password,
     });
     console.log("User signed up:", response.data);
+    return response.data;
   } catch (error: any) {
     console.error("Error signing up:", error.response.data);
+    throw error;
   }
 };
 
-const logIn = async (username: string, password: string) => {
+const logIn = async (name: string, password: string) => {
   try {
     const response = await axios.post("http://localhost:3001/users/check", {
-      name: username,
+      name: name,
       password,
     });
     console.log("User logged in:", response.data);
+    return response.data;
   } catch (error: any) {
     console.error("Error logging in:", error.response.data);
+    throw error;
   }
 };
 
@@ -32,13 +36,17 @@ const Header: React.FC = () => {
   const [isSighUp, setIsSighUp] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { isLoggedIn, map, user } = useApp();
+  const { isLoggedIn, setIsLoggedIn, user, setUser } = useApp();
 
   const handleSighUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      await signUp(username, password);
+      const newUser = await signUp(username, password);
+      console.log("NEw = ", newUser);
+      setUser(newUser);
+      setIsLoggedIn(true);
+      setModalActive(false);
     } catch (error: any) {
       console.error("Error signing up:", error.response.data);
     }
@@ -48,7 +56,11 @@ const Header: React.FC = () => {
     e.preventDefault();
 
     try {
-      await logIn(username, password);
+      const loggedInUser = await logIn(username, password);
+      console.log("loggedInUser = ", loggedInUser);
+      setUser(loggedInUser);
+      setIsLoggedIn(true);
+      setModalActive(false);
     } catch (error: any) {
       console.error("Error logging in:", error.response.data);
     }
@@ -79,9 +91,13 @@ const Header: React.FC = () => {
       </div>
 
       <div className="header-right">
-        <button className="header-button" onClick={toggleModal}>
-          Sign up/Log in
-        </button>
+        {isLoggedIn ? (
+          <div className="greeting">Hello, {user?.name}!</div>
+        ) : (
+          <button className="header-button" onClick={toggleModal}>
+            Sign up/Log in
+          </button>
+        )}
       </div>
 
       <div className={`modal ${modalActive ? "active" : ""}`}>
