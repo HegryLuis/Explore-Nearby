@@ -36,7 +36,7 @@ const App: React.FC = () => {
     "museum",
     "park",
     "store",
-    "zoo",
+    "hotel",
     //...
   ];
 
