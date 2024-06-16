@@ -127,6 +127,7 @@
 
 .modal.active {
   display: flex;
+  backdrop-filter: blur(10px);
 }
 
 .login input {

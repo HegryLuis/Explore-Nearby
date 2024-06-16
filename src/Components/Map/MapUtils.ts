@@ -90,40 +90,49 @@ const searchNearbyPlaces = async (
     type: type,
   };
 
+  console.log("Requesting nearby places with type:", type);
+
   service.nearbySearch(request, async (results, status) => {
     if (status === google.maps.places.PlacesServiceStatus.OK && results) {
       const places: Place[] = [];
       for (const result of results) {
         try {
-          const placeDetails = await getPlaceDetails(result.place_id!, service);
-          const place: Place = {
-            id: result.place_id!,
-            name: result.name!,
-            vicinity: result.vicinity || "",
-            rating: result.rating,
-            opening_hours: placeDetails.opening_hours
-              ? {
-                  isOpen: placeDetails.opening_hours.isOpen,
-                  weekday_text: placeDetails.opening_hours.weekday_text,
-                }
-              : undefined,
-            photos: result.photos?.map((photo) => ({
-              height: photo.height,
-              width: photo.width,
-              photo_reference: photo.getUrl({
-                maxWidth: photo.width,
-                maxHeight: photo.height,
-              }),
-              html_attributions: photo.html_attributions,
-            })),
-            type: type,
-            geometry: result.geometry!,
-          };
-          places.push(place);
+          if (result.types && result.types.includes(type)) {
+            const placeDetails = await getPlaceDetails(
+              result.place_id!,
+              service
+            );
+            console.log(`Result = ${result.name} = `, result);
+            const place: Place = {
+              id: result.place_id!,
+              name: result.name!,
+              vicinity: result.vicinity || "",
+              rating: result.rating,
+              opening_hours: placeDetails.opening_hours
+                ? {
+                    isOpen: placeDetails.opening_hours.isOpen,
+                    weekday_text: placeDetails.opening_hours.weekday_text,
+                  }
+                : undefined,
+              photos: result.photos?.map((photo) => ({
+                height: photo.height,
+                width: photo.width,
+                photo_reference: photo.getUrl({
+                  maxWidth: photo.width,
+                  maxHeight: photo.height,
+                }),
+                html_attributions: photo.html_attributions,
+              })),
+              type: type,
+              geometry: result.geometry!,
+            };
+            places.push(place);
+          }
         } catch (error) {
           console.error("Error fetching place details:", error);
         }
       }
+
       setLocalAttractions(places);
     } else {
       console.error("Error fetching nearby places:", status);
@@ -171,13 +180,18 @@ const onMapReady = (
   setLocalAttractions: React.Dispatch<React.SetStateAction<Place[]>>,
   selectedType: string
 ) => {
-  map.addListener("click", (event: google.maps.MapMouseEvent) => {
+  const handleClick = (event: google.maps.MapMouseEvent) => {
     const clickedLatlng = event.latLng;
+
     if (clickedLatlng) {
       addMarker(clickedLatlng, map, markers, setMarkers);
       searchNearbyPlaces(clickedLatlng, map, setLocalAttractions, selectedType);
     }
-  });
+  };
+
+  google.maps.event.clearListeners(map, "click");
+
+  map.addListener("click", handleClick);
 };
 
 const clearMarkers = (

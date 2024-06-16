@@ -31,16 +31,19 @@ const App: React.FC = () => {
 
   const placeTypes = [
     "restaurant",
-    "cafe",
-    "bar",
     "museum",
     "park",
-    "store",
-    "hotel",
+    "zoo",
     //...
   ];
 
+  useEffect(() => {
+    console.log("Selected type = ", selectedType);
+    console.log("local attractions: ", localAttractions);
+  }, [selectedType]);
+
   function handleTypeChange(type: string) {
+    setLocalAttractions([]);
     setSelectedType(type);
   }
 
