@@ -27,11 +27,63 @@
 }
 
 .favorite-places-list li {
+  display: flex;
+  justify-content: space-around;
   margin-bottom: 15px;
   padding: 10px;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
+  background: linear-gradient(to bottom, #e0f7fa, #023e8a);
+}
+
+.place-block {
+  width: 70%;
+}
+
+.weekday {
+  display: flex;
+  flex-direction: column;
+}
+
+.place-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.place-btn button {
+  background-color: #03045e;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.show-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  border-radius: 50%;
+}
+
+.delete-btn:hover {
+  background-color: #0077b6;
+}
+
+.show-btn:hover {
+  background-color: #0077b6;
 }
 
 .favorite-places-list li .buttons {

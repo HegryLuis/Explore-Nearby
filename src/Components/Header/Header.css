@@ -1,3 +1,29 @@
+.greeting-text {
+  font: 400 1em/1.5 "Neuton";
+  text-align: center;
+  margin: 0;
+}
+
+.animated-text {
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  border: 4px double rgba(255, 255, 255, 0.25);
+  border-width: 4px 0;
+  overflow: hidden;
+}
+
+.animated-text span {
+  text-align: center;
+  font: 700 1.5em/1 "Oswald", sans-serif;
+  letter-spacing: 0;
+  display: block;
+  margin: 0 auto;
+  text-shadow: 0 0 80px rgba(255, 255, 255, 0.5);
+  background: linear-gradient(90deg, #ff7f50, #1e90ff) repeat-y;
+  background-clip: text;
+  color: transparent;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -11,13 +37,6 @@
   gap: 10px;
 }
 
-.header-logo svg,
-.header-title {
-  animation: pulse 3s infinite;
-  display: inline-block;
-  vertical-align: middle;
-}
-
 .header-title {
   font-size: 24px;
   font-family: Arial, sans-serif;
@@ -25,8 +44,36 @@
 }
 
 .greeting {
+  display: flex;
+  align-items: center;
+}
+
+.greeting p {
   font-size: 22px;
   font-family: Arial, sans-serif;
+  margin-right: 30px;
+}
+
+.greeting-buttons {
+  max-width: 150px;
+  display: flex;
+  flex-direction: column;
+}
+
+.greeting-buttons .btn {
+  margin-top: 10px;
+  background-color: #03045e;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.greeting-buttons .btn:hover {
+  background-color: #0077b6;
 }
 
 @keyframes pulse {
@@ -198,4 +245,10 @@ h6 span {
 h6 span.active {
   color: #03045e;
   border-bottom: 2px solid #03045e;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
 }
