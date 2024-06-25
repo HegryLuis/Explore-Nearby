@@ -31,8 +31,11 @@ const App: React.FC = () => {
 
   const placeTypes = [
     "restaurant",
+    "cafe",
+    "bar",
     "museum",
     "park",
+    "store",
     "zoo",
     //...
   ];
