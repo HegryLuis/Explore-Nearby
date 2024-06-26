@@ -76,6 +76,7 @@ const FavoritePlacesList: React.FC = () => {
           weekday_text: placeData.result.opening_hours?.weekday_text,
         },
         rating: placeData.result.rating,
+        effectiveRating: 0,
         type: placeData.type,
         geometry: placeData.result.geometry,
       })

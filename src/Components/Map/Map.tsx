@@ -7,6 +7,7 @@ interface MapProps {
   setMap: (map: google.maps.Map) => void;
   map: google.maps.Map | null;
   selectedType: string;
+  radius: number;
 }
 
 const Map: React.FC<MapProps> = ({
@@ -15,6 +16,7 @@ const Map: React.FC<MapProps> = ({
   selectedType,
   setMap,
   map,
+  radius,
 }) => {
   useEffect(() => {
     const initMap = (): void => {
@@ -52,7 +54,7 @@ const Map: React.FC<MapProps> = ({
     if (map) {
       onMapReady(map);
     }
-  }, [selectedType]);
+  }, [selectedType, radius]);
 
   return (
     <div id="map" className="map" style={{ width: "50%", height: "600px" }} />

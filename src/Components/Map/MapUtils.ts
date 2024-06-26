@@ -41,6 +41,7 @@ const getPlaceDetailsById = async (placeId: string): Promise<Place | null> => {
       name: result.name,
       vicinity: result.vicinity || "",
       rating: result.rating,
+      effectiveRating: result.rating || 0,
       opening_hours: result.opening_hours
         ? {
             isOpen: result.opening_hours.open_now,
@@ -76,7 +77,8 @@ const searchNearbyPlaces = async (
   latLng: google.maps.LatLng,
   map: google.maps.Map | null,
   setLocalAttractions: React.Dispatch<React.SetStateAction<Place[]>>,
-  type: string
+  type: string,
+  radius: number
 ) => {
   if (!map) {
     return;
@@ -86,7 +88,7 @@ const searchNearbyPlaces = async (
 
   const request = {
     location: latLng,
-    radius: 1000, // Radius in meters
+    radius: radius * 1000, // Radius in meters
     type: type,
   };
 
@@ -102,12 +104,15 @@ const searchNearbyPlaces = async (
               result.place_id!,
               service
             );
+            const effectiveRating = result.rating || 0;
+
             console.log(`Result = ${result.name} = `, result);
             const place: Place = {
               id: result.place_id!,
               name: result.name!,
               vicinity: result.vicinity || "",
               rating: result.rating,
+              effectiveRating: effectiveRating,
               opening_hours: placeDetails.opening_hours
                 ? {
                     isOpen: placeDetails.opening_hours.isOpen,
@@ -178,14 +183,21 @@ const onMapReady = (
   markers: google.maps.Marker[],
   setMarkers: React.Dispatch<React.SetStateAction<google.maps.Marker[]>>,
   setLocalAttractions: React.Dispatch<React.SetStateAction<Place[]>>,
-  selectedType: string
+  selectedType: string,
+  radius: number
 ) => {
   const handleClick = (event: google.maps.MapMouseEvent) => {
     const clickedLatlng = event.latLng;
 
     if (clickedLatlng) {
       addMarker(clickedLatlng, map, markers, setMarkers);
-      searchNearbyPlaces(clickedLatlng, map, setLocalAttractions, selectedType);
+      searchNearbyPlaces(
+        clickedLatlng,
+        map,
+        setLocalAttractions,
+        selectedType,
+        radius
+      );
     }
   };
 

@@ -28,6 +28,8 @@ const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [detailedPlacesData, setDetailedPlacesData] = useState<any[]>([]);
+  const [radius, setRadius] = useState<number>(1);
+  const [radiusInput, setRadiusInput] = useState<string>("1");
 
   const placeTypes = [
     "restaurant",
@@ -53,7 +55,13 @@ const App: React.FC = () => {
   const handleMarkerClick = (position: google.maps.LatLng) => {
     if (map) {
       addMarker(position, map, markers, setMarkers);
-      searchNearbyPlaces(position, map, setLocalAttractions, selectedType);
+      searchNearbyPlaces(
+        position,
+        map,
+        setLocalAttractions,
+        selectedType,
+        radius
+      );
     }
   };
 
@@ -64,8 +72,26 @@ const App: React.FC = () => {
       markers,
       setMarkers,
       setLocalAttractions,
-      selectedType
+      selectedType,
+      radius
     );
+  };
+
+  // Обработчик изменения значения радиуса
+  const handleRadiusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (
+      value === "" ||
+      (/^\d+$/.test(value) &&
+        parseInt(value, 10) >= 1 &&
+        parseInt(value, 10) <= 50)
+    ) {
+      setRadiusInput(value);
+      const parsedValue = parseInt(value, 10);
+      if (!isNaN(parsedValue)) {
+        setRadius(parsedValue);
+      }
+    }
   };
 
   useEffect(() => {
@@ -119,6 +145,21 @@ const App: React.FC = () => {
               </div>
             ))}
           </div>
+
+          <div className="radius-filter">
+            <label htmlFor="radius">
+              <strong>Radius (km) : </strong>
+            </label>
+            <input
+              type="number"
+              id="radius"
+              name="radius"
+              min="1"
+              max="50"
+              value={radiusInput}
+              onChange={handleRadiusChange}
+            />
+          </div>
         </div>
 
         <div className="buttons">
@@ -145,6 +186,7 @@ const App: React.FC = () => {
             selectedType={selectedType}
             setMap={setMap}
             map={map}
+            radius={radius}
           />
           <LocalAttractionsList
             list={localAttractions}

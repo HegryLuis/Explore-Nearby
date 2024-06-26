@@ -4,6 +4,35 @@
   font-family: sans-serif;
 }
 
+/* Стили для radius-filter */
+.radius-filter {
+  display: flex;
+  margin: 20px 0;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.radius-filter label {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.radius-filter input[type="number"] {
+  width: 80px;
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.radius-filter input[type="number"]:focus {
+  outline: none;
+  border-color: #023e8a;
+  box-shadow: 0 0 5px rgba(2, 62, 138, 0.5);
+}
+
 /* Filters */
 .filters {
   margin: 10px;
@@ -13,7 +42,6 @@
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
-  /* color: #023e8a; */
   text-align: center;
   padding: 5px 0;
   border-bottom: 2px solid #ddd;

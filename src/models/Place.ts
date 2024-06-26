@@ -3,6 +3,7 @@ export interface Place {
   name: string;
   vicinity: string;
   rating?: number;
+  effectiveRating: number;
   opening_hours?: {
     isOpen: () => boolean;
     weekday_text?: string[] | undefined;

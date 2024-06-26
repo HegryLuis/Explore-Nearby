@@ -59,6 +59,7 @@ const Header: React.FC = () => {
   const [newPassword, setNewPassword] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [currentPasswordValid, setCurrentPasswordValid] = useState(false);
+  const [usernameExists, setUsernameExists] = useState(false);
 
   useEffect(() => {
     setCurrentPasswordValid(false);
@@ -73,8 +74,11 @@ const Header: React.FC = () => {
       setUser(newUser);
       setIsLoggedIn(true);
       setModalActive(false);
+      setUsernameExists(false);
+      setNewUsername(username);
     } catch (error: any) {
       console.error("Error signing up:", error.response.data);
+      setUsernameExists(true);
     }
   };
 
@@ -237,6 +241,9 @@ const Header: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              {usernameExists && (
+                <p className="error-message">Username already exists.</p>
+              )}
               <button>Sign up</button>
             </form>
           ) : (

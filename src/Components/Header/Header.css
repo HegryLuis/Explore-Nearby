@@ -4,6 +4,10 @@
   margin: 0;
 }
 
+.error-message {
+  color: red;
+}
+
 .animated-text {
   text-transform: uppercase;
   letter-spacing: 0.5em;

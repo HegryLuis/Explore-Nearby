@@ -10,6 +10,7 @@ const LocalAttractionsList: React.FC<{
 }> = ({ list, onPlaceClick }) => {
   const { setSelectedPlace } = useApp();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [sortByRatingDesc, setSortByRatingDesc] = useState(false);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) =>
@@ -29,10 +30,53 @@ const LocalAttractionsList: React.FC<{
     }
   }, [currentIndex]);
 
+  const sortedList = [...list].sort((a, b) => {
+    if (sortByRatingDesc) {
+      return b.effectiveRating - a.effectiveRating; // сортировка по убыванию
+    } else {
+      return a.effectiveRating - b.effectiveRating; // сортировка по возрастанию
+    }
+  });
+
   return (
     <div className="slider-main">
       <div className="slider-title">
-        <h2>Local Attractions:</h2>
+        <h2>Local Attractions: </h2>
+
+        <div className="sort-options custom-placeType">
+          <label>
+            <input
+              type="radio"
+              name="sort"
+              value="asc"
+              checked={!sortByRatingDesc}
+              onChange={() => setSortByRatingDesc(false)}
+            />
+            <div className="sort__label custom-placeType__label">
+              <strong>Sort by Rating Ascending</strong>
+            </div>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="sort"
+              value="desc"
+              checked={sortByRatingDesc}
+              onChange={() => setSortByRatingDesc(true)}
+            />
+            <div className="sort__label custom-placeType__label">
+              <strong>Sort by Rating Descending</strong>
+            </div>
+          </label>
+        </div>
+
+        <div className="slide-counter">
+          {list.length > 0 && (
+            <p>
+              {currentIndex + 1} / {list.length}
+            </p>
+          )}
+        </div>
       </div>
 
       {list.length === 0 ? (
@@ -45,7 +89,7 @@ const LocalAttractionsList: React.FC<{
             &#10094;
           </button>
           <div className="slider">
-            {list.map((place: Place, index: number) => (
+            {sortedList.map((place: Place, index: number) => (
               <div
                 key={index}
                 className={`slide ${index === currentIndex ? "active" : ""}`}
